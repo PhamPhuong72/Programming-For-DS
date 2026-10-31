@@ -1,0 +1,13 @@
+name: csc17104-final
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - jupyterlab
+  - ipykernel
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - scipy
+  - openpyxl

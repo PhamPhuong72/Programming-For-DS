@@ -1,0 +1,17 @@
+# Dataset files are not committed (see project brief)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Python and Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Local environments / editor
+.env
+.venv/
+.vscode/
+.DS_Store
