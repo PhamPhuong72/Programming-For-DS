@@ -27,7 +27,7 @@ See [docs/question_plan.md](docs/question_plan.md).
 2. At repository root, create and activate environment:
    ```bash
    conda env create -f environment.yml
-   conda activate csc17104-final
+   conda activate p4ds-final
    jupyter lab
    ```
 3. Download raw data from the URL above and place in `data/raw/` (do not commit large files).
