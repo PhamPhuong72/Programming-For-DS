@@ -1,0 +1,118 @@
+MyAnimeList Dataset
+contains 300k users, 14k anime metadata, and 80mil. ratings from MyAnimeList.net
+
+MyAnimeList Dataset
+
+Code
+
+Download
+
+About Dataset
+Context
+This dataset contains information about Anime and Otaku who watch it. There already is a similar dataset https://www.kaggle.com/CooperUnion/anime-recommendations-database but it is few orders of magnitude smaller and is missing many information. This dataset aims to be representative sample of internet otaku community for demographics analysis and trends inside this group. It contains information about users (gender, location, birth date etc.), about anime (airing date, genres, producer…) and anime lists.
+Users in MyAnimeList can add anime to their lists, and mark it as plan to watch, completed, watching, dropped…, and they can also rate it by score 1-10.
+
+Note: All information gathered here are publicly available, there was no need to be registered anywhere to access the data.
+
+I did analysis of this dataset, showing various interesting trends in otaku culture, it is accessible in this repo with jupyter notebooks: https://github.com/racinmat/mal-analysis all interesting figures and data are in user_analysis.ipynb and basic_analysis.ipynb.
+And powerpoint presentation with all interesting figures is here https://github.com/racinmat/mal-analysis/blob/master/prezantace.pptx
+
+Content
+The dataset contains 3 files:
+
+AnimeList.csv contains list of anime, with title, title synonyms, genre, studio, licencor, producer, duration, rating, score, airing date, episodes, source (manga, light novel etc.) and many other important data about individual anime providing sufficient information about trends in time about important aspects of anime. Rank is in float format in csv, but it contains only integer value. This is due to NaN values and their representation in pandas.
+
+UserList.csv contains information about users who watch anime, namely username, registration date (join_date), last online date, birth date, gender, location, and lots of aggregated values from their anime lists.
+
+UserAnimeList.csv contains anime lists of all users. Per each record, here is username, anime ID, score, status and timestamp when was this record last updated.
+
+The dataset as a whole contains
+
+302 675 unique users
+302 573 of them with some demographic data
+80 076 112 records in anime lists
+46 358 322 of them have ratings
+14 478 unique anime
+There is filtered version of dataset is contained in files anime_filtered.csv, animelists_filtered.csv and users_filtered.csv. It consists of users who have birth date, location and gender filled. So it contains lot less animelists data.
+But all important characteristics like rating mean and variation, or genres in animelists is unchanged when ommiting users with some missing data, so even with filtered data we should get same information.
+The filtered dataset contains:
+
+116 133 unique users with demographic data
+35 802 010 records in anime lists
+20 726 794 of them have ratings
+14 474 unique anime
+There is also cleaned version of the filtered dataset which consists of files anime_cleaned.csv, animelists_cleaned.csv and users_cleaned.csv. This cleaned version has trucated all users with ridiculously large number of episodes in anime which obviously don't have that much episodes, watched episodes larger than number of episodes in individual anime were fixed and seen episodes and watch time were recalculated accordingly. For some users, last online was 1900 year, just weird values, so their last activity was inferred from their last animelist update timestamp.
+Many users incorrectly filled number of rewatched episodes. For anime where more episodes have been watched than that anime has episodes, watched episodes have been rewritten to number of episodes in that anime. Watch time and number of watched episodes have been fixed accordingly.
+Users too young and too old obviously were truncated too.
+6 users with most episodes seen, suspiciously lots of episodes, were truncated here too. That is too few users to affect any statistics.
+Anime with an ### Context
+
+This dataset contains informations about Anime and Otaku who watch it. There already is similar dataset https://www.kaggle.com/CooperUnion/anime-recommendations-database but it is few orders of magnitude smaller and is missing many information. This dataset aims to be representative sample of internet otaku community for demographics analysis and trends inside this group. It contains information about users (gender, location, birth date etc.), about anime (airing date, genres, producer…) and anime lists.
+Users in MyAnimeList can add anime to their lists, and mark it as plan to watch, completed, watching, dropped…, and they can also rate it by score 1-10.
+
+Note: All information gathered here are publicly available, there was no need to be registered anywhere to access the data.
+
+I did analysis of this dataset, showing various interesting trends in otaku culture, it is accessible in this repo with jupyter notebooks: https://github.com/racinmat/mal-analysis all interesting figures and data are in user_analysis.ipynb and basic_analysis.ipynb.
+And powerpoint presentation with all interesting figures is here https://github.com/racinmat/mal-analysis/blob/master/prezantace.pptx
+
+Content
+The dataset contains 3 files:
+
+AnimeList.csv contains list of anime, with title, title synonyms, genre, studio, licencor, producer, duration, rating, score, airing date, episodes, source (manga, light novel etc.) and many other important data about individual anime providing sufficient information about trends in time about important aspects of anime. Rank is in float format in csv, but it contains only integer value. This is due to NaN values and their representation in pandas.
+
+UserList.csv contains information about users who watch anime, namely username, registration date (join_date), last online date, birth date, gender, location, and lots of aggregated values from their anime lists.
+
+UserAnimeList.csv contains anime lists of all users. Per each record, here is username, anime ID, score, status and timestamp when was this record last updated.
+
+The dataset as a whole contains
+
+302 675 unique users
+302 573 of them with some demographic data
+80 076 112 records in anime lists
+46 358 322 of them have ratings
+14 478 unique anime
+There is filtered version of dataset is contained in files anime_filtered.csv, animelists_filtered.csv and users_filtered.csv. It consists of users who have birth date, location and gender filled. So it contains lot less animelists data.
+But all important characteristics like rating mean and variation, or genres in animelists is unchanged when ommiting users with some missing data, so even with filtered data we should get same information.
+The filtered dataset contains:
+
+116 133 unique users with demographic data
+35 802 010 records in anime lists
+20 726 794 of them have ratings
+14 474 unique anime
+There is also cleaned version of the filtered dataset which consists of files anime_cleaned.csv, animelists_cleaned.csv and users_cleaned.csv. This cleaned version has trucated all users with ridiculously large number of episodes in anime which obviously don't have that much episodes, watched episodes larger than number of episodes in individual anime were fixed and seen episodes and watch time were recalculated accordingly. For some users, last online was 1900 year, just weird values, so their last activity was inferred from their last animelist update timestamp.
+Many users incorrectly filled number of rewatched episodes. For anime where more episodes have been watched than that anime has episodes, watched episodes have been rewritten to number of episodes in that anime. Watch time and number of watched episodes have been fixed accordingly.
+Users too young and too old obviously were truncated too.
+6 users with most episodes seen, suspiciously lots of episodes, were truncated here too. That is too few users to affect any statistics.
+Anime with an unknown studio or unknown source were discarded too. Also anime that were not yet aired were discarded. Their ratings were removed too. Removing them did not affect much other statistics, and without studio or source they did not give much information. Mostly unknown and insignificant anime were removed that way. Airing year was calculated for all remaining anime.
+
+my_status in animelists tables contains integer values. This is their semantics:
+
+1: watching
+2: completed
+3: on hold
+4: dropped
+6: plan to watch
+other values are not known.
+
+Data gathering methodology: MAL uses username as main identifier for users. Thus they can not be simply iterated over and usernames must be gathered. I gathered usernames from watching challenge 2015-2018 forum threads, and then from MAL clubs. There is ~80k clubs. I crawled first ~40k of these clubs and got usernames from there.
+
+Thanks to Alejandro Augustin you can download user's locations in unified format here.
+
+Acknowledgements
+This dataset has been crawled from MyAnimeList.net with https://github.com/racinmat/myanimelist-crawler. This repo is based on https://github.com/Dibakarroy1997/myanimelist-data-set-creator but is fully prepared for long-term data scraping.
+It uses https://github.com/TimboKZ/kuristina web-server and https://github.com/pushrbx/python3-mal library for scraping itself.
+The Thumbnail image is from https://www.pinterest.com/pin/717198309380413746/
+Many previous analyses have been made, each of them exploiting different aspects of the otaku community. Here are some of them. Lots of them used much smaller dataset, using this data should lead to more precise outputs.
+
+Gender split in anime
+Anime genres relations
+Temporal analysis of moe genre
+temporal analysis of some anime
+Acknowledgments:
+These data can be used without additional permissions or fees. If you use these data in a publication, presentation, or other research product please use the following citation:
+
+Matěj Račinský, “MyAnimeList Dataset.” Kaggle, 2018, doi: 10.34740/KAGGLE/DSV/45582.
+
+Inspiration
+This dataset may be used either for recommendation system or for analysis on otaku culture, to see time trends of individual genres, to see tendencies and customs of user ratings, to find similarities or differences between individual user groups…
+I already performed one analysis, which is available here: https://github.com/racinmat/mal-analysis
