@@ -15,7 +15,6 @@ __pycache__/
 .venv/
 .vscode/
 .DS_Store
-test.txt
 
 # Reference notebooks (not part of the submission)
 temp/
