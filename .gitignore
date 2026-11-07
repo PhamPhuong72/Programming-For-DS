@@ -16,3 +16,6 @@ __pycache__/
 .vscode/
 .DS_Store
 test.txt
+
+# Reference notebooks (not part of the submission)
+temp/
