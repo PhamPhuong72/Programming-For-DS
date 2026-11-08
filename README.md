@@ -29,6 +29,18 @@
 - **Checks against the author's description:** the differences we found (users with empty lists, the username `null` read as `NaN`, 537 rows with unexplained `my_status` values) are in [kaggle/stage1_eda_first_run.ipynb](kaggle/stage1_eda_first_run.ipynb).
 - **Related public notebooks:** the dataset has [many public notebooks](https://www.kaggle.com/datasets/azathoth42/myanimelist/code). The ones we reviewed are mostly recommender systems, score prediction from anime metadata, and genre/gender visualisations. **How our questions differ:** [TODO, fill in once the questions are final]
 
+## Known data limits (verified on Kaggle)
+
+Evidence for each line is in the stage notebooks in [kaggle/](kaggle/), and every column is listed in [stage 1b](kaggle/stage1b_column_dictionary_run.ipynb) with a tag: **[A]** author-defined, **[I]** inferred, **[V]** verified by us.
+
+- **Keys.** `anime_id` is unique in `AnimeList.csv` (confirmed). `user_id` is **not** unique in `UserList.csv` (302,673 distinct values for 302,675 rows), so tables are joined on `username`. `(username, anime_id)` is the key of `UserAnimeList.csv`: 0 repeated pairs among 80,076,112 rows (confirmed). So counting rows per anime counts users.
+- **Our users vs the published counts.** The crawled users are only a part of MAL, so our counts should be smaller than the published `members` and `scored_by`. That holds for `members` (our count is larger for 2 of 14,474 anime) but **not for `scored_by`** (larger for 59 anime, up to 64 times), which we have not explained yet. We use `scored_by` for the order of anime, not as an exact count. Over all anime our rows are about 24% of `members`. The share varies by anime (middle 90%: 21% to 55%), so the crawled users are not a uniform slice of MAL and our results describe the crawled users.
+- **`stats_rewatched` (user table) is unverified [I]. We do not build a main question on it.** What we know it is *not*: the number of anime rewatched (5,086 users have a value larger than their whole list), the sum of `my_rewatching_ep` (96.9% of users with a positive value have no row with an episode value; rank correlation 0.11 where both exist), or the number of rows with `my_rewatching = 1` (rank correlation 0.14). It behaves like a total that MyAnimeList computed on the profile, which we cannot recompute from our tables. If a question needs it, we use it as given and say so. Details: [stage 1d](kaggle/stage1d_rewatch_check_run.ipynb) and [stage 1c](kaggle/stage1c_verify_meanings_run.ipynb).
+- **Impossible values.** `stats_episodes` reaches 10,989,789, `my_watched_episodes` 65,535 and `my_rewatching_ep` 16,777,215, so they need a cap or removal before use. `stats_episodes` equals the sum of the user's `my_watched_episodes` for only 50.8% of users (median ratio 1.000).
+- **Placeholders that `isna()` does not see:** `source = Unknown` (4,210 anime), `rating = None` (544), `type = Unknown` (30), `0000-00-00` dates, and `episodes = 0` meaning unknown.
+- **`related`:** the 4,515 anime without a relation are written as an empty list `[]`, not as missing data.
+- **`rank` is not simply the order of `score`:** its rank correlation is −0.855 with `score` and −0.862 with `members`.
+
 ## Research questions
 
 See [docs/question_plan.md](docs/question_plan.md).
