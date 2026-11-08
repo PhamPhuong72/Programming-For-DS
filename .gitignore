@@ -4,6 +4,13 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 
+# Downloaded CSV files kept locally at data/ root
+/data/*.csv
+
+# Local examples: suffix before the extension, or no extension
+*_example
+*_example.*
+
 # Python and Jupyter
 __pycache__/
 *.py[cod]
