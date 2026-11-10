@@ -16,7 +16,7 @@ This order follows the course template of `notebooks/01_collection_exploration.i
 
 | Step | Question | Notebook | May conclude | State |
 |---|---|---|---|---|
-| 1 | What do the files contain, and where do they differ from the author's description? | [kaggle/01_compare_with_description_run.ipynb](../kaggle/01_compare_with_description_run.ipynb), section 2 of notebook 01 | Record counts, keys, codes that the description does not define | Done on raw data. Username counts must be redone with the safe load |
+| 1 | What do the files contain, and where do they differ from the author's description? | [kaggle/01_compare_with_description_run.ipynb](../kaggle/01_compare_with_description_run.ipynb), section 2 of notebook 01 | Record counts, keys, codes that the description does not define | Done. Redone with the safe load (second run): 283,045 users with rows, 19,630 without, 8 of them declare anime |
 | 2 | What does each column mean, and in which format is it stored? | [kaggle/02_column_dictionary_run.ipynb](../kaggle/02_column_dictionary_run.ipynb) | Meaning tagged [A], [I] or [V]; formats; placeholders written as words | Done |
 | 3 | What is wrong with each table (placeholders, impossible values, inconsistencies)? | [kaggle/03_raw_quality_audit.ipynb](../kaggle/03_raw_quality_audit.ipynb) | A list of problems with counts. **No cleaning, no statistics between columns** | Written, not yet run |
 | 4 | What do we do about each problem? | section 4 of notebook 01, output `data/processed/` | A cleaning rule per problem, with the row count before and after | Not started |
@@ -37,7 +37,7 @@ Everything in this table was computed on raw data.
 
 | Conclusion | Where | Why cleaning may change it | Re-check |
 |---|---|---|---|
-| 283,044 users have list rows, 19,631 do not, 9 of those declare anime | step 1 | The first run read the files with pandas defaults, so the user `null` was missing in both tables. The numbers may move by one | **Yes**, with the safe load |
+| Users with list rows, users without, users declaring anime without rows | step 1 | The first run lost the user `null` (283,044 / 19,631 / 9). **Re-checked with the safe load: 283,045 / 19,630 / 8** | **Done** |
 | Mean score 7.49, dropped 4.95 against completed 7.57, share of unrated rows per status | step 1 | Includes the 537 rows with an unknown status. Depends on the rule for score 0 and for unknown status | **Yes** (a small change is expected) |
 | Counts of placeholders and missing values per column | step 2 | Counted before we decided which words are missing | **Yes**, after the rules of step 4 |
 | `popularity` follows `members`, `rank` against `score`, `episodes` by type | 05a | Anime table only, which has few impossible values | Check only |
