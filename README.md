@@ -26,17 +26,23 @@
   | `UserAnimeList.csv` | a user–anime pair | ~5 GB |
 
 - **Other versions in the same Kaggle dataset:** the author also publishes *filtered* (users with birth date, location and gender: 116,133 users, 35,802,010 list rows) and *cleaned* versions (further fixes by the author). We analyse the raw files and clean them ourselves, so every filtering decision is ours and documented; the other versions are only used for comparison.
-- **Checks against the author's description:** the differences we found (users with empty lists, the username `null` read as `NaN`, 537 rows with unexplained `my_status` values) are in [kaggle/stage1_eda_first_run.ipynb](kaggle/stage1_eda_first_run.ipynb).
+- **Checks against the author's description:** the differences we found (users with empty lists, the username `null` read as `NaN`, 537 rows with unexplained `my_status` values) are in [kaggle/01_compare_with_description_run.ipynb](kaggle/01_compare_with_description_run.ipynb).
 - **Related public notebooks:** the dataset has [many public notebooks](https://www.kaggle.com/datasets/azathoth42/myanimelist/code). The ones we reviewed are mostly recommender systems, score prediction from anime metadata, and genre/gender visualisations. **How our questions differ:** [TODO, fill in once the questions are final]
+
+## Order of exploration
+
+We explore in a fixed order: **1** compare with the description, **2** column dictionary, **3** raw quality audit (only measures), **4** cleaning decisions, **5** verify meanings and summarise on the cleaned data, **6** research questions. A number computed on raw data is not a finding until it is re-checked after cleaning. The steps, the rules and the list of conclusions to re-check are in [docs/exploration_order.md](docs/exploration_order.md).
 
 ## Known data limits (verified on Kaggle)
 
-Evidence for each line is in the stage notebooks in [kaggle/](kaggle/), and every column is listed in [stage 1b](kaggle/stage1b_column_dictionary_run.ipynb) with a tag: **[A]** author-defined, **[I]** inferred, **[V]** verified by us.
+> The numbers below were computed on **raw** data. The ones marked in [docs/exploration_order.md](docs/exploration_order.md) are re-checked after the cleaning step.
 
-- **Keys.** `anime_id` is unique in `AnimeList.csv` (confirmed). `user_id` is **not** unique in `UserList.csv` (302,673 distinct values for 302,675 rows), so tables are joined on `username`. `(username, anime_id)` is the key of `UserAnimeList.csv`: 0 repeated pairs among 80,076,112 rows (confirmed). So counting rows per anime counts users.
+Evidence for each line is in the step notebooks in [kaggle/](kaggle/) (the order is explained in [docs/exploration_order.md](docs/exploration_order.md)), and every column is listed in [step 2](kaggle/02_column_dictionary_run.ipynb) with a tag: **[A]** author-defined, **[I]** inferred, **[V]** verified by us.
+
+- **Keys.** `anime_id` is unique in `AnimeList.csv` (confirmed). `user_id` is **not** unique in `UserList.csv` (302,673 distinct values for 302,675 rows: 2 ids are each used by 2 usernames: one account crawled under two names, with the same list stored twice, 1,059 duplicated list rows), so tables are joined on `username`. `(username, anime_id)` is the key of `UserAnimeList.csv`: 0 repeated pairs among 80,076,112 rows (confirmed). So counting rows per anime counts users.
 - **Our users vs the published counts.** The crawled users are only a part of MAL, so our counts should be smaller than the published `members` and `scored_by`. That holds for `members` (our count is larger for 2 of 14,474 anime) but **not for `scored_by`** (larger for 59 anime, up to 64 times), which we have not explained yet. We use `scored_by` for the order of anime, not as an exact count. Over all anime our rows are about 24% of `members`. The share varies by anime (middle 90%: 21% to 55%), so the crawled users are not a uniform slice of MAL and our results describe the crawled users.
-- **`stats_rewatched` (user table) is unverified [I]. We do not build a main question on it.** What we know it is *not*: the number of anime rewatched (5,086 users have a value larger than their whole list), the sum of `my_rewatching_ep` (96.9% of users with a positive value have no row with an episode value; rank correlation 0.11 where both exist), or the number of rows with `my_rewatching = 1` (rank correlation 0.14). It behaves like a total that MyAnimeList computed on the profile, which we cannot recompute from our tables. If a question needs it, we use it as given and say so. Details: [stage 1d](kaggle/stage1d_rewatch_check_run.ipynb) and [stage 1c](kaggle/stage1c_verify_meanings_run.ipynb).
-- **Impossible values.** `stats_episodes` reaches 10,989,789, `my_watched_episodes` 65,535 and `my_rewatching_ep` 16,777,215, so they need a cap or removal before use. `stats_episodes` equals the sum of the user's `my_watched_episodes` for only 50.8% of users (median ratio 1.000).
+- **`stats_rewatched` (user table) is unverified [I]. We do not build a main question on it.** What we know it is *not*: the number of anime rewatched (5,086 users have a value larger than their whole list), the sum of `my_rewatching_ep` (96.9% of users with a positive value have no row with an episode value; rank correlation 0.11 where both exist), or the number of rows with `my_rewatching = 1` (rank correlation 0.14). It behaves like a total that MyAnimeList computed on the profile, which we cannot recompute from our tables. If a question needs it, we use it as given and say so. Details: [step 5b](kaggle/05b_rewatch_check_run.ipynb) and [step 5a](kaggle/05a_verify_meanings_run.ipynb).
+- **Impossible values.** `stats_episodes` reaches 243,794,900 (step 3), `my_watched_episodes` 65,535 and `my_rewatching_ep` 16,777,215, so they need a cap or removal before use. `stats_episodes` equals the sum of the user's `my_watched_episodes` for only 50.8% of users (median ratio 1.000).
 - **Placeholders that `isna()` does not see:** `source = Unknown` (4,210 anime), `rating = None` (544), `type = Unknown` (30), `0000-00-00` dates, and `episodes = 0` meaning unknown.
 - **`related`:** the 4,515 anime without a relation are written as an empty list `[]`, not as missing data.
 - **`rank` is not simply the order of `score`:** its rank correlation is −0.855 with `score` and −0.862 with `members`.
@@ -69,16 +75,16 @@ We run the heavy notebooks on Kaggle and keep the project in Git. Kaggle's "Link
 | Path | Who changes it | Purpose |
 |---|---|---|
 | `24122024-ltkhdl-final-project.ipynb` (repo root) | **Only Kaggle.** Never edit or commit it by hand. | Mirror of the last Kaggle run, with real outputs |
-| `kaggle/stageN_<topic>.ipynb` | Us | **Source** of a stage: clean notebook, no outputs, imported into Kaggle |
-| `kaggle/stageN_<topic>_run.ipynb` | Us | **Record** of a stage: copy of the Kaggle mirror with our explanations written below the real outputs |
+| `kaggle/NN_<topic>.ipynb` | Us | **Source** of a step: clean notebook, no outputs, imported into Kaggle |
+| `kaggle/NN_<topic>_run.ipynb` | Us | **Record** of a step: copy of the Kaggle mirror with our explanations written below the real outputs |
 | `notebooks/01…03_*.ipynb` | Us | Final deliverable notebooks, assembled from the stage records |
 
 **One stage, step by step:**
 
-1. Import `kaggle/stageN_<topic>.ipynb` into the linked Kaggle notebook (replace its content) and run it.
+1. Import `kaggle/NN_<topic>.ipynb` into the linked Kaggle notebook (replace its content) and run it.
 2. Push from Kaggle (Save version → GitHub). This overwrites the root file on the Kaggle branch.
 3. Locally: `git fetch`, then `git status`, then `git pull`. Because nobody edited the root file, the pull merges cleanly.
-4. Copy the root file to `kaggle/stageN_<topic>_run.ipynb` and add explanations below its outputs there. Do not edit the root file.
+4. Copy the root file to `kaggle/NN_<topic>_run.ipynb` and add explanations below its outputs there. Do not edit the root file.
 5. Commit and push your own files, then start the next stage with a new source file.
 
 **Rules that keep it conflict-free:**
