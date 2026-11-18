@@ -20,7 +20,7 @@ This order follows the course template of `notebooks/01_collection_exploration.i
 | 2 | What does each column mean, and in which format is it stored? | [kaggle/02_column_dictionary_run.ipynb](../kaggle/02_column_dictionary_run.ipynb) | Meaning tagged [A], [I] or [V]; formats; placeholders written as words | Done |
 | 3 | What is wrong with each table (placeholders, impossible values, inconsistencies)? | [kaggle/03_raw_quality_audit.ipynb](../kaggle/03_raw_quality_audit.ipynb) (part 7 holds the list-table, numeric-column, username, duplicate and contradiction checks) | A list of problems with counts. **No cleaning, no statistics between columns** | Done (run once, on raw data). Summary of the problems at the end of the notebook |
 | 4 | What do we do about each problem? | section 4 of notebook 01, output `data/processed/` | A cleaning rule per problem, with the row count before and after | Not started |
-| 5 | Do the meanings we only guessed hold on the **cleaned** data? | [05a](../kaggle/05a_verify_meanings_run.ipynb), [05b](../kaggle/05b_rewatch_check_run.ipynb), [05c](../kaggle/05c_sample_vs_published.ipynb) | Meaning tags [V]; how our sample relates to the published numbers | Run on raw data once. Must be re-run on cleaned data |
+| 5 | Do the meanings we only guessed hold on the **cleaned** data? | No retained notebook | Meaning tags remain [I] until a consolidated validation is run | Old 05a/05b/05c notebooks were removed without execution; do not cite their raw-data results as findings |
 | 6 | The research questions | `notebooks/02_analysis.ipynb`, `notebooks/03_ml_question.ipynb` | Findings | Not started |
 
 ## Rules
