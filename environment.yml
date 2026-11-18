@@ -5,9 +5,13 @@ dependencies:
   - python=3.11
   - jupyterlab
   - ipykernel
+  - nbformat
+  - nbclient
   - numpy
   - pandas
+  - pyarrow
   - matplotlib
+  - seaborn
   - scikit-learn
   - scipy
   - openpyxl

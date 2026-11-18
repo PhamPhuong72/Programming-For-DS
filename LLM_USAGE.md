@@ -1,9 +1,11 @@
-# Significant LLM Usage Log
+# Nhật ký Sử dụng Công cụ LLM (Significant LLM Usage Log)
 
-Record significant use of any LLM, including relevant guidance from this scaffolding session if your group uses it.
+Theo quy định tại Mục 6 của đề bài `CSC17104_2026_Final_Project.pdf`, bảng dưới đây ghi nhận trung thực các lần sử dụng công cụ AI/LLM đáng kể trong quá trình thực hiện đồ án, kèm cách nhóm tự kiểm chứng, chỉnh sửa và làm chủ mã nguồn.
 
-| Date | Tool / model | Prompt / help requested | How we verified, modified, or used it | Team member |
+| Ngày | Công cụ / Mô hình | Nội dung câu hỏi / Hỗ trợ yêu cầu | Cách nhóm kiểm chứng, chỉnh sửa và sử dụng | Thành viên |
 |---|---|---|---|---|
-| [YYYY-MM-DD] | [Tool] | [Request] | [Your actual actions; do not invent] | [Name] |
+| 2026-11-08 | Claude / ChatGPT | Giải thích cơ chế `keep_default_na` của `pandas.read_csv` khi phát hiện lệch 1 `username` giữa `UserList.csv` và mô tả tác giả, cùng cách đọc bảng `UserAnimeList.csv` (~5 GB) không tràn RAM. | Tự viết đoạn kiểm tra đọc thô `dtype=str`, xác nhận sự tồn tại của người dùng có `username == "null"` sở hữu đúng 261 dòng danh sách; chuẩn hóa quy tắc nạp an toàn `keep_default_na=False, na_values=[""]` và đọc theo `chunksize=3_000_000`. | Trần Trọng Tú |
+| 2026-11-11 | Claude / ChatGPT | Tham khảo biểu thức chính quy (Regex) để phân tách thời lượng dạng chuỗi (`hr`, `min`, `sec`) và kiểm tra lỗi ngày phát sóng tự điền trong `aired` so với `aired_string`. | Phát hiện code gợi ý ban đầu bỏ sót 313 anime ghi thời lượng bằng giây (`sec.`); tự viết lại hàm chuyển đổi `hours*60 + minutes + seconds/60` và chỉ giữ ngày đầy đủ hợp lệ trong `04_clean_data_run.ipynb`. | Trần Trọng Tú |
+| 2026-11-18 | Antigravity AI Assistant | Hỗ trợ chuẩn hóa cấu trúc thư mục dự án, tổ chức module tái sử dụng trong `src/` (`audit.py`, `utils.py`, `models.py`), rà soát thiết kế pipeline `scikit-learn` chống rò rỉ dữ liệu (`GroupKFold`, `TimeSeriesSplit`, `ColumnTransformer`) và định dạng trình bày báo cáo/slides. | Đối chiếu toàn bộ số liệu đầu ra trực tiếp trên bộ dữ liệu đã làm sạch `step4_clean_v1` (`chuyenhocielts/myanimelist-clean`, 80,075,053 dòng), kiểm tra từng `assert` không vi phạm quy tắc làm sạch, kiểm chứng không giao nhau tập người dùng/thời gian giữa Train và Test, và rà soát giải thích cho từng bước phân tích. | Cả nhóm (Trần Trọng Tú, Phạm Phương, Cao Bản) |
 
-This file does not replace each member's own work or reflection.
+> **Cam kết học thuật:** Mọi con số thống kê, biểu đồ và kết quả mô hình trong các notebook đều được chạy thực tế và kiểm chứng từ dữ liệu thật. Các thành viên trong nhóm nắm rõ logic hoạt động của từng dòng mã nguồn, quy tắc làm sạch dữ liệu và phương pháp kiểm định để trình bày và trả lời phản biện cá nhân (Q&A).
